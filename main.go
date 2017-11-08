@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	manager.Databases["cockroachdb"] = manager.Statements{
+	manager.Migrations["cockroachdb"] = manager.Statements{
 		Migrations: &migrate.MemoryMigrationSource{
 			Migrations: []*migrate.Migration{
 				{
@@ -83,7 +83,7 @@ func init() {
 		QueryInsertPolicyResourcesRel: `INSERT INTO ladon_policy_resource_rel (policy, resource) VALUES($1, $2) ON CONFLICT (policy, resource) DO NOTHING`,
 		QueryInsertPolicySubjects:     `INSERT INTO ladon_subject (id, template, compiled, has_regex) VALUES($1, $2, $3, $4) ON CONFLICT (id) DO NOTHING`,
 		QueryInsertPolicySubjectsRel:  `INSERT INTO ladon_policy_subject_rel (policy, subject) VALUES($1, $2) ON CONFLICT (policy, subject) DO NOTHING`,
-		FindRequestCandidates: `
+		QueryRequestCandidates: `
 		SELECT
 			p.id,
 			p.effect,
