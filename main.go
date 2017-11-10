@@ -1,12 +1,18 @@
 package crdb
 
 import (
+	"database/sql"
+
+	"github.com/lib/pq"
 	manager "github.com/ory/ladon/manager/sql"
 	migrate "github.com/rubenv/sql-migrate"
 	gorp "gopkg.in/gorp.v1"
 )
 
 func init() {
+	if !driverExists(sql.Drivers(), "cockroachdb") {
+		sql.Register("cockroachdb", &pq.Driver{})
+	}
 	migrate.MigrationDialects["cockroachdb"] = gorp.PostgresDialect{}
 	manager.Migrations["cockroachdb"] = manager.Statements{
 		Migrations: &migrate.MemoryMigrationSource{
@@ -107,4 +113,13 @@ func init() {
 			OR
 			(subject.has_regex IS TRUE AND $2 ~ subject.compiled)`,
 	}
+}
+
+func driverExists(drivers []string, driver string) bool {
+	for _, a := range drivers {
+		if a == driver {
+			return true
+		}
+	}
+	return false
 }

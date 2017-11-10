@@ -1,7 +1,6 @@
 package crdb_test
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -9,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/lib/pq"
 	"github.com/ory/dockertest"
 	manager "github.com/ory/ladon/manager/sql"
 
@@ -21,10 +19,6 @@ var (
 	resources []*dockertest.Resource
 	pool      *dockertest.Pool
 )
-
-func init() {
-	sql.Register("cockroachdb", &pq.Driver{})
-}
 
 func TestMain(m *testing.M) {
 	var wg sync.WaitGroup
