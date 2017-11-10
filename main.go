@@ -3,9 +3,11 @@ package crdb
 import (
 	manager "github.com/ory/ladon/manager/sql"
 	migrate "github.com/rubenv/sql-migrate"
+	gorp "gopkg.in/gorp.v1"
 )
 
 func init() {
+	migrate.MigrationDialects["cockroachdb"] = gorp.PostgresDialect{}
 	manager.Migrations["cockroachdb"] = manager.Statements{
 		Migrations: &migrate.MemoryMigrationSource{
 			Migrations: []*migrate.Migration{
